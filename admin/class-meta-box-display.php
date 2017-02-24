@@ -41,6 +41,25 @@ class Meta_Box_Display {
 		$file = dirname( __FILE__ ) . '/data/questions.txt';
 		$question = $this->question_reader->get_question_from_file( $file );
 
-		echo wp_kses( $question );
+		echo '<p id="learnautoload">' . esc_html( $this->sanitized_html( $question ) ) . '</p>';
+
+	}
+
+	/**
+	 * Sanitizes the incoming markup to the user so that
+	 *
+	 * @access private
+	 * @param  string $html The markup to render in the meta box.
+	 * @return string       Sanitized markup to display to the user.
+	 */
+	private function sanitized_html( $html ) {
+
+		$allowed_html = array(
+			'p' => array(
+				'id' => array(),
+			),
+		);
+
+		return wp_kses( $html, $allowed_html );
 	}
 }
